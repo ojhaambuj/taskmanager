@@ -1,0 +1,151 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <nav>
+            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link" [class.active]="showAddTask" id="nav-add-tab" data-toggle="tab"
+                    href="#nav-add" role="tab" aria-controls="nav-add" aria-selected="true"
+                    (click)="showAddTask=true;showViewTask=false;message=null;">Add Task</a>
+                <a class="nav-item nav-link" [class.active]="showViewTask" id="nav-view-tab" data-toggle="tab"
+                    href="#nav-view" role="tab" aria-controls="nav-view" aria-selected="false"
+                    (click)="showAddTask=false;showViewTask=true;message=null;">View Task</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div *ngIf="showAddTask"class="tab-pane fade show active" id="nav-add" role="tabpanel" aria-labelledby="nav-add-tab">
+                <div class="text-center">
+                    <form [formGroup]="addTask">
+                        <div class="row form-group">
+                            <label class="col-xs-12 col-sm-2 offset-4">Task Name:</label>
+                            <div class="col-xs-12 col-sm-2">
+                                <input type="text" class="form-control" name="taskName" formControlName="taskName"
+                                    [attr.disabled]="edit">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-xs-12 col-sm-2 offset-4">Task Priority:</label>
+                            <div class="col-xs-12 col-sm-2">
+                                <input type="range" min="0" max="30" value="15" class="slider" name="priority"
+                                    formControlName="priority" class="form-control">
+                                {{addTask.value.priority}}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-xs-12 col-sm-2 offset-4">Parent Task:</label>
+                            <div class="col-xs-12 col-sm-2">
+                                <input type="text" class="form-control" name="parentTask" formControlName="parentTask">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-xs-12 col-sm-2 offset-4">Start Date: &nbsp;</label>
+                            <div class="col-xs-12 col-sm-2">
+                                <input type="date" class="form-control" name="startDate" formControlName="startDate">
+                            </div>
+
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-xs-12 col-sm-2 offset-4"> End Date: </label>
+                            <div class="col-xs-12 col-sm-2">
+                                <input type="date" class="form-control" name="endDate" formControlName="endDate">
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <button type="submit" class="btn btn-primary" (click)="saveTask()">
+                                {{edit? 'Update Task' : 'Add Task'}}</button>&nbsp; &nbsp;
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div *ngIf="showViewTask" class="tab-pane fade show active" id="nav-view" role="tabpanel" aria-labelledby="nav-view-tab">
+
+            <form [formGroup]="viewTask">
+                <div class="row form-group">
+                    <label class="col-xs-12 col-sm-2">Task Name:</label>
+                    <div class="col-xs-12 col-sm-4">
+                        <input type="text" name="taskName" formControlName="taskName" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-2">Parent Task:</label>
+                    <div class="col-xs-12 col-sm-4">
+                        <input type="text" name="parentTask" formControlName="parentTask" class="form-control">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-xs-12 col-sm-1">Priority Form:</label>
+                    <div class="col-xs-12 col-sm-2">
+                        <input type="text" name="priorityForm" formControlName="priorityForm" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-1">Priority To:</label>
+                    <div class="col-xs-12 col-sm-2">
+                        <input type="text" name="priorityTo" formControlName="priorityTo" class="form-control">
+                    </div>
+                    <label class="col-xs-12 col-sm-1">Start Date:</label>
+                    <div class="col-xs-12 col-sm-2">
+                        <input type="date" name="startDate" formControlName="startDate" class="form-control">
+                    </div>
+
+                    <label class="col-xs-12 col-sm-1">End Date:</label>
+                    <div class="col-xs-12 col-sm-2">
+                        <input type="date" name="endDate" formControlName="endDate" class="form-control">
+                    </div>
+                </div>
+                <hr>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Task</th>
+                            <th scope="col">Parent</th>
+                            <th scope="col">Priority</th>
+                            <th scope="col">Start</th>
+                            <th scope="col">End</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let task of originalTasks">
+                            <td>{{task.taskName}}</td>
+                            <td>{{task.parentTask}}</td>
+                            <td>{{task.priority}}</td>
+                            <td>{{task.startDate}}</td>
+                            <td>{{task.endDate}}</td>
+                            <td>
+                                <button class="btn btn-primary" (click)="editTask(task)">Edit</button></td>
+                            <td> <button id="remove" (click)="deleteRow(task.taskName)"
+                                    class="btn btn-danger">Delete</button></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </form>
+        </div>
+        
+    </div>
+</div>
+</div>
+
+<div class="modal" *ngIf="message">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Message</h4>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+                    {{message}}
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="message=null;">Close</button>
+            </div>
+      
+          </div>
+        </div>
+      </div>
+

@@ -1,0 +1,62 @@
+<div class="container">
+	<h3>View Task</h3>
+	<form [formGroup]="searchForm">
+		<div class="form-group row">
+			<label for="task" class="col-sm-2 col-form-label">Task:</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" id="task" formControlName="task">
+			</div>
+			<label for="parent-task" class="col-sm-2 col-form-label">Parent Task:</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" id="parent-task" formControlName="parentTask">
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="priority-from" class="col-sm-1 col-form-label">Priority From:</label>
+			<div class="col-sm-2">
+				<input type="number" class="form-control" id="priority-from" formControlName="priorityFrom">
+			</div>
+			<label for="priority-to" class="col-sm-1 col-form-label">Priority To:</label>
+			<div class="col-sm-2">
+				<input type="number" class="form-control" id="priority-to" formControlName="priorityTo">
+			</div>
+			
+			<label for="start-date" class="col-sm-1 col-form-label">Start Date:</label>
+			<div class="col-sm-2">
+				<input type="date" class="form-control" id="start-date" formControlName="startDate">
+			</div>
+			<label for="end-date" class="col-sm-1 col-form-label">End Date:</label>
+			<div class="col-sm-2">
+				<input type="date" class="form-control" id="end-date" formControlName="endDate">
+			</div>
+		</div>
+	</form>
+	
+	<hr>
+	
+	<table class="table">
+		<thead class="thead-dark">
+			<tr>
+				<th scope="col">Task</th>
+				<th scope="col">Parent</th>
+				<th scope="col">Priority</th>
+				<th scope="col">Start</th>
+				<th scope="col">End</th>
+				<th scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let task of tasks | taskFilter: formFilters">
+				<td>{{task.task}}</td>
+				<td>{{task.parentTask}}</td>
+				<td>{{task.priority}}</td>
+				<td>{{task.startDate}}</td>
+				<td>{{task.endDate}}</td>
+				<td><button class="btn btn-primary" (click)="editTask(task.task)">Edit</button></td>
+				<td><button class="btn btn-secondary"(click)="endTask(task.task)">End Task</button></td>
+			</tr>
+		</tbody>
+	</table>			
+</div>
